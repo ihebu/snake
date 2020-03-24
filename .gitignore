@@ -1,0 +1,14 @@
+__pycache__/
+
+#virtual env
+env/
+
+#test files and folders
+test.py
+test/
+tests/
+
+#high score file
+high_score.txt
+
+*.pyc
