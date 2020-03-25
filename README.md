@@ -4,7 +4,7 @@ This is a basic python implementation for the snake game using [pygame](https://
 
 ![test](img/snake.gif)
 
-### Setup process
+### Getting started
 
 ##### Clone the repo
 
