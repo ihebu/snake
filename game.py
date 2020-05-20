@@ -23,7 +23,6 @@ class Game:
         self.is_lost = False
         self.is_paused = False
         self.level = 30
-        self.high_score = helpers.get_high_score()
         # pygame components
         pygame.display.set_caption("Snake Game")
         self.window = pygame.display.set_mode(self.dimensions)
@@ -57,7 +56,6 @@ class Game:
             self.t1 = t2
 
     def restart(self):
-        self.high_score = max(self.score, self.high_score)
         self.snake = Snake(self.window, self.snake_color, self.snake_width)
         self.is_lost = False
         self.is_frozen = True
@@ -67,14 +65,10 @@ class Game:
         self.window.fill(self.bg_color)
         self.snake.draw_body(pygame.draw)
         self.snake.draw_food(pygame.draw)
-        helpers.write_screen_stats(
-            self.font, self.text_color, self.window, self.score, self.high_score
-        )
+        helpers.write_screen_stats(self.font, self.text_color, self.window, self.score)
 
     def quit(self):
         self.is_running = False
-        if self.score > self.high_score:
-            helpers.set_high_score(self.score)
 
     def levelup(self):
         self.score += 1
