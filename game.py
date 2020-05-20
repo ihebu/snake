@@ -1,4 +1,3 @@
-import argparse
 import time
 
 import pygame
@@ -8,8 +7,7 @@ from snake import Snake
 
 
 class Game:
-    def __init__(self, args):
-        # global parameters
+    def __init__(self):
         pygame.init()
         self.screen_width, self.screen_height = 900, 600
         self.background_color = (15, 76, 129)
@@ -24,10 +22,7 @@ class Game:
         self.is_frozen = True
         self.is_lost = False
         self.is_paused = False
-        # get difficulty and level
-        self.difficulty = args.d
-        self.level = 20 + self.difficulty * 5
-        # get high score
+        self.level = 30
         self.high_score = helpers.get_high_score()
         # pygame components
         self.window = pygame.display.set_mode((self.screen_width, self.screen_height))
@@ -116,16 +111,7 @@ class Game:
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-d",
-        help="sets the difficulty level",
-        type=int,
-        choices={1, 2, 3},
-        required=True,
-    )
-    args = parser.parse_args()
-    game = Game(args)
+    game = Game()
     game.start()
     game.end()
 
