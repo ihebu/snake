@@ -1,3 +1,17 @@
+def get_high_score():
+    try:
+        with open("high_score.txt") as f:
+            high_score = int(f.read())
+            return high_score
+    except:
+        return 0
+
+
+def set_high_score(score):
+    with open("high_score.txt", "w") as f:
+        f.write(str(score))
+
+
 def write(font, color, text, window, pos, align=True):
     text = font.render(text, True, color)
     if align:  # align the text vertically
@@ -7,22 +21,20 @@ def write(font, color, text, window, pos, align=True):
 
 
 def write_screen_stats(font, color, window, score, high_score):
-    c = 10
     words = [
-        "Score : " + str(score),
-        "High Score : " + str(high_score),
+        f"Score : {score}",
+        f"High Score : {high_score}",
         "Press P to pause/continue",
     ]
-    for word in words:
-        write(font, color, word, window, (10, c), align=False)
-        c += 20
+    for i in range(3):
+        write(font, color, words[i], window, (10, 10 + 20 * i), align=False)
 
 
-def write_on_lose(font, color, window, score):
+def write_on_lose(font, color, window):
     width = window.get_width()
     height = window.get_height()
     c = height / 2
-    words = ["You Lose", "Score : " + str(score), "Play Again ?", "Y / N"]
+    words = ["You Lose", "Play Again ? [Y / N ]"]
     for word in words:
         write(font, color, word, window, (width / 2, c))
         c += 25
@@ -36,17 +48,3 @@ def write_on_pause(font, color, window):
     for word in words:
         write(font, color, word, window, (width / 2, c))
         c += 20
-
-
-def get_high_score():
-    try:
-        with open("high_score.txt") as file:
-            high_score = int(file.read())
-            return high_score
-    except:
-        return 0
-
-
-def set_high_score(score):
-    with open("high_score.txt", "w") as file:
-        file.write(str(score))

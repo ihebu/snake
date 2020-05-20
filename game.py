@@ -9,8 +9,8 @@ from snake import Snake
 class Game:
     def __init__(self):
         pygame.init()
-        self.screen_width, self.screen_height = 900, 600
-        self.background_color = (15, 76, 129)
+        self.dimensions = (900, 600)
+        self.bg_color = (15, 76, 129)
         self.snake_color = (237, 102, 99)
         self.snake_width = 20
         self.text_color = (232, 144, 142)
@@ -25,8 +25,8 @@ class Game:
         self.level = 30
         self.high_score = helpers.get_high_score()
         # pygame components
-        self.window = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("Snake Game")
+        self.window = pygame.display.set_mode(self.dimensions)
         self.clock = pygame.time.Clock()
         self.snake = Snake(self.window, self.snake_color, self.snake_width)
 
@@ -64,7 +64,7 @@ class Game:
         self.score = 0
 
     def run(self):
-        self.window.fill(self.background_color)
+        self.window.fill(self.bg_color)
         self.snake.draw_body(pygame.draw)
         self.snake.draw_food(pygame.draw)
         helpers.write_screen_stats(
@@ -99,9 +99,7 @@ class Game:
             if self.snake.crashed:
                 self.lose()
             if self.is_lost:
-                helpers.write_on_lose(
-                    self.font, self.text_color, self.window, self.score
-                )
+                helpers.write_on_lose(self.font, self.text_color, self.window)
             if self.is_paused:
                 helpers.write_on_pause(self.font, self.text_color, self.window)
             if not self.is_paused and not self.is_lost and not self.is_frozen:
