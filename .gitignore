@@ -1,14 +1,5 @@
 __pycache__/
-
-#virtual env
-env/
-
-#test files and folders
-test.py
-test/
-tests/
-
-#high score file
+env
+.vscode
 high_score.txt
 
-*.pyc
