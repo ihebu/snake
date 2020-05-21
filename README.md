@@ -1,6 +1,6 @@
 # Snake Game
 
-This is a basic python implementation for the snake game using [pygame](https://github.com/pygame/pygame) module.
+This is a basic python implementation for the snake game.
 
 ![test](img/snake.gif)
 
@@ -22,15 +22,5 @@ $ pip install -r requirements.txt
 ##### Start the game
 
 ```
-$ python game.py -d {1,2,3}
+$ python game.py
 ```
-
-##### For more help
-
-```
-$ python game.py --help
-```
-
-### License
-
-check the [LICENSE](LICENSE) file for details
