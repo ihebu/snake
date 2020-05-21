@@ -8,26 +8,29 @@ from snake import Snake
 
 class Game:
     def __init__(self):
-        pygame.init()
         self.dimensions = (900, 600)
         self.bg_color = (15, 76, 129)
-        self.snake_color = (237, 102, 99)
-        self.snake_width = 20
         self.text_color = (232, 144, 142)
+        self.snake_obj = {"length": 5, "width": 20, "color": (237, 102, 99)}
         self.font_family = "arial"
         self.font_size = 17
-        self.font = pygame.font.SysFont(self.font_family, self.font_size)
-        self.score = 0
         self.is_running = True
-        self.is_frozen = True
-        self.is_lost = False
         self.is_paused = False
-        self.level = 30
+        self.rate = 30
         # pygame components
+        pygame.init()
         pygame.display.set_caption("Snake Game")
         self.window = pygame.display.set_mode(self.dimensions)
+        self.font = pygame.font.SysFont(self.font_family, self.font_size)
         self.clock = pygame.time.Clock()
-        self.snake = Snake(self.window, self.snake_color, self.snake_width)
+        self.start()
+
+    def start(self):
+        self.snake = Snake(self.window, self.snake_obj)
+        self.snake.spawn_food()
+        self.is_lost = False
+        self.is_frozen = True
+        self.score = 0
 
     def listen(self):
         keys = pygame.key.get_pressed()
@@ -45,9 +48,9 @@ class Game:
         if keys[pygame.K_p] and not self.is_lost:
             self.pause()
         if keys[pygame.K_n] and self.is_lost:
-            self.quit()
+            self.end()
         if keys[pygame.K_y] and self.is_lost:
-            self.restart()
+            self.start()
 
     def pause(self):
         t2 = time.time()
@@ -55,20 +58,12 @@ class Game:
             self.is_paused = not self.is_paused
             self.t1 = t2
 
-    def restart(self):
-        self.snake = Snake(self.window, self.snake_color, self.snake_width)
-        self.is_lost = False
-        self.is_frozen = True
-        self.score = 0
-
-    def run(self):
+    def update(self):
+        pygame.display.update()
         self.window.fill(self.bg_color)
-        self.snake.draw_body(pygame.draw)
-        self.snake.draw_food(pygame.draw)
+        self.snake.draw_body()
+        self.snake.draw_food()
         helpers.write_screen_stats(self.font, self.text_color, self.window, self.score)
-
-    def quit(self):
-        self.is_running = False
 
     def levelup(self):
         self.score += 1
@@ -78,34 +73,39 @@ class Game:
     def lose(self):
         self.is_lost = True
 
-    def end(self):
-        pygame.quit()
+    def run(self):
+        self.clock.tick(self.rate)
+        self.listen()
+        self.update()
+        if self.snake.ate:
+            self.levelup()
+        if self.snake.crashed:
+            self.lose()
+        if self.is_lost:
+            helpers.write_on_lose(self.font, self.text_color, self.window)
+        if self.is_paused:
+            helpers.write_on_pause(self.font, self.text_color, self.window)
+        if not self.is_paused and not self.is_lost and not self.is_frozen:
+            self.snake.move()
+        if pygame.event.get(pygame.QUIT):
+            self.end()
 
-    def start(self):
+    def play(self):
         self.t1 = time.time()
         while self.is_running:
-            pygame.display.update()
-            self.clock.tick(self.level)
-            self.listen()
             self.run()
-            if self.snake.ate:
-                self.levelup()
-            if self.snake.crashed:
-                self.lose()
-            if self.is_lost:
-                helpers.write_on_lose(self.font, self.text_color, self.window)
-            if self.is_paused:
-                helpers.write_on_pause(self.font, self.text_color, self.window)
-            if not self.is_paused and not self.is_lost and not self.is_frozen:
-                self.snake.move()
-            if pygame.event.get(pygame.QUIT):
-                self.quit()
+
+    def quit(self):
+        pygame.quit()
+
+    def end(self):
+        self.is_running = False
 
 
 def main():
     game = Game()
-    game.start()
-    game.end()
+    game.play()
+    game.quit()
 
 
 if __name__ == "__main__":

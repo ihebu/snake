@@ -19,7 +19,7 @@ def write_on_lose(font, color, window):
     width = window.get_width()
     height = window.get_height()
     c = height / 2
-    words = ["You Lose", "Play Again ? [Y / N ]"]
+    words = ["You Lose", "Play Again ? ( Y / N )"]
     for word in words:
         write(font, color, word, window, (width / 2, c))
         c += 25
