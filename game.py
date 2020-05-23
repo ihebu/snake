@@ -1,5 +1,3 @@
-import time
-
 import pygame
 
 import helpers
@@ -15,7 +13,6 @@ class Game:
         self.font_family = "arial"
         self.font_size = 17
         self.is_running = True
-        self.is_paused = False
         self.rate = 30
         # pygame components
         pygame.init()
@@ -45,18 +42,10 @@ class Game:
         if keys[pygame.K_DOWN]:
             self.snake.direction = [0, 1]
             self.is_frozen = False
-        if keys[pygame.K_p] and not self.is_lost:
-            self.pause()
         if keys[pygame.K_n] and self.is_lost:
             self.end()
         if keys[pygame.K_y] and self.is_lost:
             self.start()
-
-    def pause(self):
-        t2 = time.time()
-        if t2 - self.t1 > 0.2:
-            self.is_paused = not self.is_paused
-            self.t1 = t2
 
     def update(self):
         pygame.display.update()
@@ -83,13 +72,12 @@ class Game:
             self.lose()
         if self.is_lost:
             helpers.write_on_lose(self.font, self.text_color, self.window)
-        if not (self.is_paused or self.is_lost or self.is_frozen):
+        if not (self.is_lost or self.is_frozen):
             self.snake.move()
         if pygame.event.get(pygame.QUIT):
             self.end()
 
     def play(self):
-        self.t1 = time.time()
         while self.is_running:
             self.run()
 
