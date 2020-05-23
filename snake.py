@@ -33,6 +33,7 @@ class Snake:
             pygame.draw.rect(self.window, self.color, rect)
 
     def grow(self):
+        self.length += 1
         # increase the snake size by 1 unit
         # check in which direction to add 1 unit to the snake
         if self.x[-1] == self.x[-2]:
