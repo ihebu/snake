@@ -11,12 +11,21 @@ class Snake:
         self.window = window
         self.screen_height = window.get_height()
         self.screen_width = window.get_width()
+        # x[0] and y[0] head of the snake
         self.x = [self.width * i for i in range(5 + self.length, 5, -1)]
         self.y = [self.width * ((self.screen_height // self.width) // 2)] * self.length
-        # x[0] and y[0] head of the snake
         # initialise direction to right
-        self.direction = [1, 0]
+        self._direction = [1, 0]
         self.food = [None, None]
+
+    @property
+    def direction(self):
+        return self._direction
+
+    @direction.setter
+    def direction(self, value):
+        if self._direction != [-x for x in value]:
+            self._direction = value
 
     def draw_body(self):
         for i in range(self.length):
