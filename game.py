@@ -1,15 +1,14 @@
 import pygame
 
-import helpers
 from snake import Snake
 
 
 class Game:
     def __init__(self):
         self.dimensions = (900, 600)
-        self.bg_color = (15, 76, 129)
-        self.font_color = (232, 144, 142)
-        self.snake_obj = {"length": 5, "size": 20, "color": (237, 102, 99)}
+        self.bg_color = (255, 255, 255)
+        self.font_color = (0, 0, 0)
+        self.snake_obj = {"length": 5, "size": 20, "color": (0, 0, 0)}
         # snake size should divide window dimensions
         self.font_family = "arial"
         self.font_size = 17
@@ -27,9 +26,10 @@ class Game:
         text = self.font.render(text, True, self.font_color)
         self.window.blit(text, (10, 10))
 
-    @property 
+    @property
     def text(self):
-        if self.is_lost: return "Play Again ? ( Y / N )"
+        if self.is_lost:
+            return "Play Again ? ( Y / N )"
         return f"Score : {self.score}"
 
     def start(self):
@@ -83,13 +83,16 @@ class Game:
         self.changed = False
         self.listen()
         self.update()
-        if self.snake.ate: self.levelup()
-        if self.snake.crashed: self.lose()
-        if not (self.is_lost or self.is_frozen): self.snake.move()
-        
+        if self.snake.ate:
+            self.levelup()
+        if self.snake.crashed:
+            self.lose()
+        if not (self.is_lost or self.is_frozen):
+            self.snake.move()
 
     def play(self):
-        while self.is_running: self.run()
+        while self.is_running:
+            self.run()
 
     def quit(self):
         pygame.quit()

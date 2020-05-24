@@ -26,7 +26,8 @@ class Snake:
 
     @direction.setter
     def direction(self, value):
-        if self._direction != [-x for x in value]: self._direction = value
+        if self._direction != [-x for x in value]:
+            self._direction = value
 
     def draw_body(self):
         for i in range(self.length):
