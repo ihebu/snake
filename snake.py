@@ -6,14 +6,16 @@ import pygame
 class Snake:
     def __init__(self, window, obj):
         self.color = obj["color"]
-        self.width = obj["width"]
+        self.size = obj["size"]
         self.length = obj["length"]
         self.window = window
-        self.screen_height = window.get_height()
-        self.screen_width = window.get_width()
+        self.height = window.get_height()
+        self.width = window.get_width()
+        self.rows = self.height // self.size
+        self.cols = self.width // self.size
         # x[0] and y[0] head of the snake
-        self.x = [self.width * i for i in range(5 + self.length, 5, -1)]
-        self.y = [self.width * ((self.screen_height // self.width) // 2)] * self.length
+        self.x = [self.size * i for i in range(5 + self.length, 5, -1)]
+        self.y = [self.size * (self.rows // 2)] * self.length
         # initialise direction to right
         self._direction = [1, 0]
         self.food = [None, None]
@@ -24,12 +26,11 @@ class Snake:
 
     @direction.setter
     def direction(self, value):
-        if self._direction != [-x for x in value]:
-            self._direction = value
+        if self._direction != [-x for x in value]: self._direction = value
 
     def draw_body(self):
         for i in range(self.length):
-            rect = (self.x[i], self.y[i], self.width, self.width)
+            rect = (self.x[i], self.y[i], self.size, self.size)
             pygame.draw.rect(self.window, self.color, rect)
 
     def grow(self):
@@ -46,8 +47,8 @@ class Snake:
             self.x[i] = self.x[i - 1]
             self.y[i] = self.y[i - 1]
         # updating the head
-        self.x[0] += self.direction[0] * self.width
-        self.y[0] += self.direction[1] * self.width
+        self.x[0] += self.direction[0] * self.size
+        self.y[0] += self.direction[1] * self.size
 
     @property
     def ate(self):
@@ -59,9 +60,9 @@ class Snake:
         if (self.x[0], self.y[0]) in zip(self.x[1:], self.y[1:]):
             return True
         # check if the snake collides with the wall
-        if not 0 <= self.x[0] < self.screen_width:
+        if not 0 <= self.x[0] < self.width:
             return True
-        if not 0 <= self.y[0] < self.screen_height:
+        if not 0 <= self.y[0] < self.height:
             return True
         # otherwise return False
         return False
@@ -69,13 +70,13 @@ class Snake:
     def spawn_food(self):
         # the food cordinates should be a multiple of the snake width
         # and it should not appear randomly in a space taken by the snake body
-        x = set(i * self.width for i in range(self.screen_width // self.width))
+        x = set(i * self.size for i in range(self.cols))
         x = tuple(x - set(self.x))
-        y = set(i * self.width for i in range(self.screen_height // self.width))
+        y = set(i * self.size for i in range(self.rows))
         y = tuple(y - set(self.y))
         self.food = random.choice(x), random.choice(y)
 
     def draw_food(self):
         x, y = self.food
-        rect = (x, y, self.width, self.width)
+        rect = (x, y, self.size, self.size)
         pygame.draw.rect(self.window, self.color, rect)

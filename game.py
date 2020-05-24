@@ -8,8 +8,9 @@ class Game:
     def __init__(self):
         self.dimensions = (900, 600)
         self.bg_color = (15, 76, 129)
-        self.text_color = (232, 144, 142)
-        self.snake_obj = {"length": 5, "width": 20, "color": (237, 102, 99)}
+        self.font_color = (232, 144, 142)
+        self.snake_obj = {"length": 5, "size": 20, "color": (237, 102, 99)}
+        # snake size should divide window dimensions
         self.font_family = "arial"
         self.font_size = 17
         self.is_running = True
@@ -21,6 +22,15 @@ class Game:
         self.font = pygame.font.SysFont(self.font_family, self.font_size)
         self.clock = pygame.time.Clock()
         self.start()
+
+    def write(self, text):
+        text = self.font.render(text, True, self.font_color)
+        self.window.blit(text, (10, 10))
+
+    @property 
+    def text(self):
+        if self.is_lost: return "Play Again ? ( Y / N )"
+        return f"Score : {self.score}"
 
     def start(self):
         self.snake = Snake(self.window, self.snake_obj)
@@ -50,13 +60,14 @@ class Game:
             self.end()
         if keys[pygame.K_y] and self.is_lost:
             self.start()
+        if pygame.event.get(pygame.QUIT):
+            self.end()
 
     def update(self):
         pygame.display.update()
         self.window.fill(self.bg_color)
         self.snake.draw_body()
         self.snake.draw_food()
-        helpers.write_screen_stats(self.font, self.text_color, self.window, self.score)
 
     def levelup(self):
         self.score += 1
@@ -68,23 +79,17 @@ class Game:
 
     def run(self):
         self.clock.tick(self.rate)
+        self.write(self.text)
         self.changed = False
         self.listen()
         self.update()
-        if self.snake.ate:
-            self.levelup()
-        if self.snake.crashed:
-            self.lose()
-        if self.is_lost:
-            helpers.write_on_lose(self.font, self.text_color, self.window)
-        if not (self.is_lost or self.is_frozen):
-            self.snake.move()
-        if pygame.event.get(pygame.QUIT):
-            self.end()
+        if self.snake.ate: self.levelup()
+        if self.snake.crashed: self.lose()
+        if not (self.is_lost or self.is_frozen): self.snake.move()
+        
 
     def play(self):
-        while self.is_running:
-            self.run()
+        while self.is_running: self.run()
 
     def quit(self):
         pygame.quit()
