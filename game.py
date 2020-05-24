@@ -31,17 +31,21 @@ class Game:
 
     def listen(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] and not self.changed:
             self.snake.direction = [-1, 0]
-        if keys[pygame.K_RIGHT]:
+            self.changed = True
+        if keys[pygame.K_RIGHT] and not self.changed:
             self.snake.direction = [1, 0]
             self.is_frozen = False
-        if keys[pygame.K_UP]:
+            self.changed = True
+        if keys[pygame.K_UP] and not self.changed:
             self.snake.direction = [0, -1]
             self.is_frozen = False
-        if keys[pygame.K_DOWN]:
+            self.changed = True
+        if keys[pygame.K_DOWN] and not self.changed:
             self.snake.direction = [0, 1]
             self.is_frozen = False
+            self.changed = True
         if keys[pygame.K_n] and self.is_lost:
             self.end()
         if keys[pygame.K_y] and self.is_lost:
@@ -64,6 +68,7 @@ class Game:
 
     def run(self):
         self.clock.tick(self.rate)
+        self.changed = False
         self.listen()
         self.update()
         if self.snake.ate:
