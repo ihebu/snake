@@ -36,12 +36,8 @@ class Snake:
         self.length += 1
         # increase the snake size by 1 unit
         # check in which direction to add 1 unit to the snake
-        if self.x[-1] == self.x[-2]:
-            self.x.append(self.x[-1])
-            self.y.append(2 * self.y[-1] - self.y[-2])
-        else:
-            self.y.append(self.y[-1])
-            self.x.append(2 * self.x[-1] - self.x[-2])
+        self.y.append(2 * self.y[-1] - self.y[-2])
+        self.x.append(2 * self.x[-1] - self.x[-2])
 
     def move(self):
         # updating the body
