@@ -75,6 +75,7 @@ class Game:
         self.snake.grow()
 
     def lose(self):
+        self.is_frozen = True
         self.is_lost = True
 
     def run(self):
@@ -87,7 +88,7 @@ class Game:
             self.levelup()
         if self.snake.crashed:
             self.lose()
-        if not (self.is_lost or self.is_frozen):
+        if not self.is_frozen:
             self.snake.move()
 
     def play(self):
