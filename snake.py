@@ -5,7 +5,8 @@ import pygame
 
 class Snake:
     def __init__(self, window, obj):
-        self.color = obj["color"]
+        self.color = obj["body_color"]
+        self.food_color = obj["food_color"]
         self.size = obj["size"]
         self.length = obj["length"]
         self.window = window
@@ -75,4 +76,4 @@ class Snake:
     def draw_food(self):
         x, y = self.food
         rect = (x, y, self.size, self.size)
-        pygame.draw.rect(self.window, self.color, rect)
+        pygame.draw.rect(self.window, self.food_color, rect)

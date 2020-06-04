@@ -2,13 +2,25 @@ import pygame
 
 from snake import Snake
 
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+BLUE = (32, 138, 174)
+RED = (219, 51, 17)
+GREEN = (22, 226, 11)
+YELLOW = (255, 212, 0)
+
 
 class Game:
     def __init__(self):
         self.dimensions = (900, 600)
-        self.bg_color = (255, 255, 255)
-        self.font_color = (0, 0, 0)
-        self.snake_obj = {"length": 5, "size": 20, "color": (0, 0, 0)}
+        self.bg_color = BLACK
+        self.font_color = WHITE
+        self.snake_obj = {
+            "length": 5,
+            "size": 20,
+            "body_color": GREEN,
+            "food_color": RED,
+        }
         # snake size should divide window dimensions
         self.font_family = "arial"
         self.font_size = 17
