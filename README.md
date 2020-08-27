@@ -2,7 +2,7 @@
 
 This is a basic python implementation for the snake game.
 
-![test](img/snake.gif)
+![test](assets/snake.gif)
 
 ### Getting started
 
@@ -22,5 +22,6 @@ $ pip install -r requirements.txt
 ##### Start the game
 
 ```
+$ cd src/
 $ python game.py
 ```
