@@ -13,11 +13,18 @@ $ git clone https://github.com/Iheb-Haboubi/snake.git
 $ cd snake
 ```
 
-##### Install required modules
+##### Install pygame
 
 ```
-$ pip install -r requirements.txt
+$ pip install pygame
 ```
+
+for python3.8 or higher:
+
+```
+$ pip install pygame==2.0.0.dev10
+```
+
 
 ##### Start the game
 
